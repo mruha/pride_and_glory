@@ -1,0 +1,61 @@
+# this is the main loop for the game
+import pygame
+import sys
+from pride_and_glory_constants import *
+from pride_and_glory_data import pride_and_glore_game_data
+from pride_and_glory_hero_data import *
+def main():
+
+    # inits
+    pygame.init()
+
+    # clock
+    fps_clock = pygame.time.Clock()
+
+    # open display
+    screen = pygame.display.set_mode(SCREEN_RES)
+    screen.fill(BACK_GROUND_COLOR)
+    pygame.display.set_caption('Pride & Glory')
+
+    # init game
+    game_data = pride_and_glore_game_data(hero_attacker, hero_defender)
+
+    while True:
+
+        # 1. event handler
+        event_handler()
+
+        # 2. game status handles
+        update_handler(game_data)
+
+        # 3. display update
+        draw_handler(screen)
+        pygame.display.update()
+
+        fps_clock.tick(FRAMES_PER_SECOND)
+
+def event_handler():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
+            pygame.quit()
+            sys.exit()
+
+def draw_handler(screen_to_draw):
+    x, y = SCREEN_RES
+
+    # set vertical lines
+    for i in VERTICAL_LINES_FOR_GRID:
+        pygame.draw.line(screen_to_draw, GRID_COLOR, (0, i), (x, i))
+
+    # set horizontal lines
+    for i in HORIZONAL_LINES_FOR_GRID:
+        pygame.draw.line(screen_to_draw, GRID_COLOR, (i, 0), (i, y))
+
+    pygame.display.update()
+
+def update_handler(data):
+    pass
+
+# start from main
+if __name__ == '__main__':
+    main()
